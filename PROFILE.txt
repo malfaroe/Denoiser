@@ -1,0 +1,15 @@
+Objective: implement an audio file denoiser
+Operation: using an noised audio file as an input, the system will
+output a cleaned/denoised audio file
+Techniques: VAE with convolutional layers
+Data for training: tbd
+Implementation time:tbd
+Stages:
+1. Review of related projects, final design and objectives refinement/precision
+------https://github.com/vbelz/Speech-enhancement
+2. General design and stages outline
+3. Methods and general script
+4. Coding, implementation and static fires
+5. Training of the model
+6. Testing
+7. Operation/production
