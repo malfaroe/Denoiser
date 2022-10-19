@@ -13,3 +13,11 @@ Stages:
 5. Training of the model
 6. Testing
 7. Operation/production
+
+
+
+#####RANDOM NOISE UNIT
+Issues:
+- Librosa takes too long to load (does it happen in mac also?)
+- Low quality of reconstructed files
+- Code must be refactored and rename

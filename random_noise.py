@@ -1,17 +1,20 @@
 import librosa
 import numpy as np
 import os
-import IPython.display as ipd
 import soundfile as sf
 import io
 from scipy.io.wavfile import write
 
+print("Completed")
+
 """
+Put noise in a file and saves the generated file 
 1. reads the file
-2. Spec file
-2. Generates the random file the same size of the file
-4. Back generated to wav
-5. Saves the random in the random noise dir"""
+2. Extracts spectrogram from file
+3. Generates a random file the same size of the file 
+4. Back generated files to wav
+5. Mixes the files
+5. Saves the "noised" file in the random noise dir"""
 
 files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\data_toy"
 generated_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\generated"
