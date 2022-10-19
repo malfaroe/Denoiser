@@ -20,4 +20,4 @@ Stages:
 Issues:
 - Librosa takes too long to load (does it happen in mac also?)
 - Low quality of reconstructed files
-- Code must be refactored and rename
+- Code must be refactored and renamed
