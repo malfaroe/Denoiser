@@ -9,8 +9,8 @@ Stages:
 ------https://github.com/vbelz/Speech-enhancement
 2. General design and stages outline
 3. Methods and general script
-4. Coding, implementation and static fires
-5. Training of the model
+4. Coding, implementation and static fire testing
+5. Model Training
 6. Testing
 7. Operation/production
 
@@ -19,5 +19,20 @@ Stages:
 #####RANDOM NOISE UNIT
 Issues:
 - Librosa takes too long to load (does it happen in mac also?)
-- Low quality of reconstructed files
+- Low quality of reconstructed files---> SOLVED
 - Code must be refactored and renamed
+
+###RECONSTRUCION TESTING UNIT ---DONE
+- Take one file and convert to spec DONE
+- Separate into magnitud and phase DONE
+- reconstruct the file DONE
+- test reconstrucion quality DONE
+- Once completed: incorporate to random noise unit DONE
+
+
+####NEXT STAGE: CREATING NOISY DATA WITH REAL NOISES
+- Code/designs survey
+- First testing unit:
+   1. EXTRACT voice and noise and convert to numpy (load)
+   2. BLEND some clean voices with randiom selected NOISES
+   3. 

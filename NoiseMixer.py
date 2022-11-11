@@ -4,22 +4,21 @@ import os
 import soundfile as sf
 import io
 from scipy.io.wavfile import write
+import random
 
-print("Completed")
 
 """
-Preparatory experiemntal module#1:
-Puts noise into a file and saves the generated file: 
-1. Reads the clean file from the files_dir directory
-2. Extracts the spectrogram from thefile
-3. Generates a random file the same size of the clean file spec
-4. Changes generated files back to wav
-5. Mixes the files
-5. Saves the "noised" file in the random noise dir"""
+MIXER OF NOISE FILES
 
-files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\data_toy"
-generated_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\generated"
-random_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\randomNoise"
+1. Reads x random audio noise files from original folder
+2. Converts them to spec
+3. Mixing
+4. Back to audio to final folder 
+"""
+
+files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Noises"
+generated_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\MixedNoise"
+# random_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\randomNoise"
 
 FRAME_SIZE = 2048
 HOP_SIZE = 512
@@ -107,11 +106,31 @@ n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
     
 
 
+def noise_mixer(files_dir,  
+n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
+    files_names= os.listdir(files_dir)
+    #Create N individual mized files
+    i = 0
+    N = 10
+    n = 5   #we will pick 5 random files each time
+    for i in range(N):
+        selected_for_mix = random.sample(files_names, n)
+        print(selected_for_mix)
+        #Loads each one file
+
+    
+
+
+    
+
+
 
 
 if __name__ == "__main__":
     # reconstructor(files_dir, random_dir)
-    noiser(files_dir, random_dir)
+    # noiser(files_dir, random_dir)
+    noise_mixer(files_dir)
+    
 
 
 
