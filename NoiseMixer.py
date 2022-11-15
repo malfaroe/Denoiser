@@ -49,7 +49,7 @@ files_names= os.listdir(files_dir)
 def reconstructor(files_dir, save_path,
  n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
     """Takea a file, extracts its specttrpgram and then reconstructs the file
-    The idea is to make sure the reconstructions has the hights possible quality
+    The idea is to make sure the reconstructions has the highest possible quality
     1. read the audio file
     2. Extract spectrogram
     3. Reconstruct
@@ -104,6 +104,23 @@ n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
         sf.write(save_path, reconstructed_file, sr_original)
 
     
+def spec_tensor(files_dir, n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
+    """Take every audio file from a directory, extracts its
+    spectrogram and saves it to a container/tensor"""
+    files_names= os.listdir(files_dir)
+    print("Files:", files_names)
+    audio_spec_tensor = []
+    for i, file in enumerate(files_names):
+        #Loads the file
+        numpy_file, sr_original = librosa.load(os.path.join(files_dir, file))
+        #Extract spectrogram
+        spec_file = librosa.stft(numpy_file,  n_fft, hop_length)
+        print(spec_file.shape)
+        audio_spec_tensor.append(spec_file)
+    #final_tensor = np.vstack(audio_spec_tensor)
+    #print("Tensor created. Final shape:", final_tensor.shape)
+
+
 
 
 def noise_mixer(files_dir,  
@@ -129,8 +146,8 @@ n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
 if __name__ == "__main__":
     # reconstructor(files_dir, random_dir)
     # noiser(files_dir, random_dir)
-    noise_mixer(files_dir)
-    
+    #noise_mixer(files_dir)
+    spec_tensor(files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\data_toy")
 
 
 
