@@ -31,15 +31,12 @@ class DataEngine():
         in the form of frames stackec via vstack"""
         files_names= os.listdir(files_directory)
         numpy_matrix = []
-        print("Starting...")
-        for i, file in enumerate(files_names):
+        for file in files_names:
             #Loads the file
             loaded_file, sr_original = librosa.load(os.path.join(files_directory, file))
             numpy_matrix.append(self.frames_generate(loaded_file, FRAME_SIZE, HOP_SIZE))
         
         numpy_matrix = np.vstack(numpy_matrix)
-        print(numpy_matrix.shape)
-        print("Numpy matrix created")
         return numpy_matrix
 
 
@@ -58,20 +55,40 @@ class DataEngine():
         and noise folders"""
         #Creates the loaded files for sound and noise folders
         sound_numpy_matrix = self.audio_numpy_matrix(files_dir)
-        print("Sound numpy matrix done")
+        print("Shape sound numpy:", sound_numpy_matrix.shape)
         noise_numpy_matrix = self.audio_numpy_matrix(noise_dir)
-        print("Noise numpy matrix done")
+        print("Shape noise numpy:", noise_numpy_matrix.shape)
+
         mixed_sound = np.zeros((sound_numpy_matrix.shape[0], sound_numpy_matrix.shape[1]))
         #Randomly mixing the files...
         for i in range(sound_numpy_matrix.shape[0]):
-            j = np.random.choice(len(noise_numpy_matrix[0]))
-            mixed_sound[i, :] = sound_numpy_matrix[i, :] + noise_numpy_matrix[j, :]
-        
-        print("Shape of the mixed sound matrix:", mixed_sound.shape)
+            # j = np.random.choice(len(noise_numpy_matrix[0]))
+            j = np.random.choice(noise_numpy_matrix.shape[0])
+            # mixed_sound[i, :] = sound_numpy_matrix[i, :] + noise_numpy_matrix[j, :]
+            mixed_sound[i, :] = sound_numpy_matrix[i, :] 
+
+        print("Total files processsed:", i)
+        return mixed_sound
+
+    def blended_wav_saver(self, numpy_file, generated_dir):
+        """Converts a numpy file into a wav file.
+        Args:
+        numpy_file: numpy matrix containing frames from sound files
+        generated_dir: folder for saving the converted file
+        Method takes de file, reshapes it as one single long sequence
+        and converts into a wav sound file"""
+        numpy_file_reshaped = numpy_file.reshape(1, numpy_file.shape[0] * numpy_file.shape[1])
+        print("Shape of the unified file:", numpy_file_reshaped.shape )
+        # librosa.output.write_wav(generated_dir + "noisy_long_sound_file.wav", numpy_file[0,:])
+        save_path = os.path.join(generated_dir, "noisy_long_sound.wav")
+        sf.write(save_path, numpy_file_reshaped[0,:], 22050, 'PCM_24')
+        print("Blended  wav file created")
 
 
+   
 
-        print("Test passed")
+
+    
 
 
 if __name__ == "__main__":
@@ -81,5 +98,10 @@ if __name__ == "__main__":
     # frames_test = engine.frames_generate(test_file, FRAME_SIZE, HOP_SIZE)
     # print(frames_test.shape)
     #engine.audio_numpy_matrix()
-    engine.noise_blender(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
+    numpy_mixed_file = engine.noise_blender(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
     generated_dir = GENERATED_DIR, frame_size = FRAME_SIZE, hop_size = HOP_SIZE)
+    engine.blended_wav_saver(numpy_mixed_file, generated_dir= GENERATED_DIR)
+    
+    print("Done...")
+
+
