@@ -7,6 +7,9 @@ Implementation time:tbd
 Stages:
 1. Review of related projects, final design and objectives refinement/precision
 ------https://github.com/vbelz/Speech-enhancement
+
+Otro: https://github.com/sthalles/cnn_denoiser
+
 2. General design and stages outline
 3. Methods and general script
 4. Coding, implementation and static fire testing
@@ -30,9 +33,14 @@ Issues:
 - Once completed: incorporate to random noise unit DONE
 
 
-####NEXT STAGE: CREATING NOISY DATA WITH REAL NOISES
-- Code/designs survey
-- First testing unit:
-   1. EXTRACT voice and noise and convert to numpy (load)
-   2. BLEND some clean voices with randiom selected NOISES
-   3. 
+####NEXT STAGE: DATA ENGIN
+
+Implementation of a data engine station for producing 
+blended audio files (sound+noises)
+Stage1: Blend one sound with one noise: First learn and im'lement code for this
+Stage 2: Blend one sound with multiple noises
+
+Preparatory stage:
+- Cleaning and refactoring code
+- Install vscode on mac station
+

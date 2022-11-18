@@ -58,17 +58,19 @@ class DataEngine():
         print("Shape sound numpy:", sound_numpy_matrix.shape)
         noise_numpy_matrix = self.audio_numpy_matrix(noise_dir)
         print("Shape noise numpy:", noise_numpy_matrix.shape)
+        print("Noise numpy sample:", noise_numpy_matrix[100:103])
 
         mixed_sound = np.zeros((sound_numpy_matrix.shape[0], sound_numpy_matrix.shape[1]))
         #Randomly mixing the files...
         for i in range(sound_numpy_matrix.shape[0]):
             # j = np.random.choice(len(noise_numpy_matrix[0]))
             j = np.random.choice(noise_numpy_matrix.shape[0])
-            # mixed_sound[i, :] = sound_numpy_matrix[i, :] + noise_numpy_matrix[j, :]
-            mixed_sound[i, :] = sound_numpy_matrix[i, :] 
+            mixed_sound[i, :] = sound_numpy_matrix[i, :] + 0.4 * noise_numpy_matrix[j, :]
 
         print("Total files processsed:", i)
         return mixed_sound
+
+        """The problem is in the queality of the wav converter unit"""
 
     def blended_wav_saver(self, numpy_file, generated_dir):
         """Converts a numpy file into a wav file.
@@ -80,8 +82,9 @@ class DataEngine():
         numpy_file_reshaped = numpy_file.reshape(1, numpy_file.shape[0] * numpy_file.shape[1])
         print("Shape of the unified file:", numpy_file_reshaped.shape )
         # librosa.output.write_wav(generated_dir + "noisy_long_sound_file.wav", numpy_file[0,:])
-        save_path = os.path.join(generated_dir, "noisy_long_sound.wav")
-        sf.write(save_path, numpy_file_reshaped[0,:], 22050, 'PCM_24')
+        save_path = os.path.join(generated_dir, "noisy_sound.wav")
+        # sf.write(save_path, numpy_file_reshaped[0,:], 22050, 'PCM_24')
+        sf.write(save_path, numpy_file_reshaped[0,:], 22050)
         print("Blended  wav file created")
 
 
@@ -92,12 +95,8 @@ class DataEngine():
 
 
 if __name__ == "__main__":
-    test_file = np.random.randn(8000)
     engine = DataEngine(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
     generated_dir = GENERATED_DIR)
-    # frames_test = engine.frames_generate(test_file, FRAME_SIZE, HOP_SIZE)
-    # print(frames_test.shape)
-    #engine.audio_numpy_matrix()
     numpy_mixed_file = engine.noise_blender(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
     generated_dir = GENERATED_DIR, frame_size = FRAME_SIZE, hop_size = HOP_SIZE)
     engine.blended_wav_saver(numpy_mixed_file, generated_dir= GENERATED_DIR)
