@@ -16,8 +16,8 @@ MIXER OF NOISE FILES
 4. Back to audio to final folder 
 """
 
-files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Noises"
-generated_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\MixedNoise"
+files_dir = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/Sound"
+generated_dir = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/MixedNoise"
 # random_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\randomNoise"
 
 FRAME_SIZE = 2048
@@ -46,7 +46,7 @@ files_names= os.listdir(files_dir)
     
 ###########################################
 
-def reconstructor(files_dir, save_path,
+def reconstructor(files_dir, save_dir,
  n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
     """Takea a file, extracts its specttrpgram and then reconstructs the file
     The idea is to make sure the reconstructions has the highest possible quality
@@ -74,7 +74,7 @@ def reconstructor(files_dir, save_path,
         audio_reverse = reversed_magnitude * file_phase
         reconstructed_file = librosa.core.istft(audio_reverse, hop_length, n_fft)
         #Save reconstructed file
-        save_path = os.path.join(random_dir, str(i) + ".wav")
+        save_path = os.path.join(save_dir, str(i) + ".wav")
         sf.write(save_path, reconstructed_file, sr_original)
 
 
@@ -144,10 +144,10 @@ n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
 
 
 if __name__ == "__main__":
-    # reconstructor(files_dir, random_dir)
+    reconstructor(files_dir, generated_dir)
     # noiser(files_dir, random_dir)
     #noise_mixer(files_dir)
-    spec_tensor(files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\data_toy")
+    #spec_tensor(files_dir = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\data_toy")
 
 
 

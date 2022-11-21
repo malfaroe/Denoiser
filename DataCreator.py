@@ -78,7 +78,60 @@ class DataEngine():
 
         """The problem is in the queality of the wav converter unit"""
 
+    ######TESTING UNIT CODE...
+
+    def audio_spec_dict(self, files_dir):
+        files_names= os.listdir(files_dir)
+        files_dictionary = dict()
+        for i, file in enumerate(files_names):
+            #Loads the file
+            loaded_file, sr_original = librosa.load(os.path.join(files_dir, file))
+            spec_file = librosa.stft(loaded_file,  n_fft = FRAME_SIZE, hop_length = HOP_SIZE)
+            file_magnitude, file_phase = librosa.magphase(spec_file)
+            files_dictionary[i] = (file_magnitude, file_phase)
+        print("Shape of magnitude array:", files_dictionary[0][0].shape)
+        return files_dictionary, sr_original
+
+    def noise_blender_test(self, files_dir, noise_dir, generated_dir, frame_size, hop_size):
+        """Generates a big numpy file  randomly mixing two folders of sound 
+        and noise folders
+        1. Load the files
+        2. Extract the spec
+        3. Extract magnitude and phase of each
+        4. Mix the magnitudes 
+        5. multiply mixer by phase
+        6. reverse and save wav
+        7. test"""
+        #Creates the spec(mag, phase) dictionary of sound and noise
+        sound_spec_dict, sr_original = self.audio_spec_dict(files_dir)
+        noise_spec_dict, sr_original = self.audio_spec_dict(noise_dir)
+
+        #mix the file
+        mixed_mag = sound_spec_dict[0][0] + noise_spec_dict[0][0]
+        complete_mixed = mixed_mag * sound_spec_dict[0][1]
+        reconstructed_file = librosa.core.istft(complete_mixed, hop_size, frame_size)
+        #Save reconstructed file
+        save_path = os.path.join(generated_dir, ".wav")
+        sf.write(save_path, reconstructed_file, sr_original)
+       
     
+
+    def loader_spec(self, files_directory):
+        """Loads de original file, extracts the spec
+    ,magnitude, mag_db and phase parameters of each file
+    ande saves it in a matrix """
+        files_names= os.listdir(files_directory)
+        numpy_matrix = []
+        for file in files_names:
+            #Loads the file
+            loaded_file, sr_original = librosa.load(os.path.join(files_directory, file))
+
+            numpy_matrix.append(self.frames_generate(loaded_file, FRAME_SIZE, HOP_SIZE))
+        
+        numpy_matrix = np.vstack(numpy_matrix)
+        return numpy_matrix
+    
+    ############################################
 
     def blended_wav_saver(self, numpy_file, generated_dir):
         """Converts a numpy file into a wav file.
@@ -105,9 +158,12 @@ class DataEngine():
 if __name__ == "__main__":
     engine = DataEngine(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
     generated_dir = GENERATED_DIR)
-    numpy_mixed_file = engine.noise_blender(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
-    generated_dir = GENERATED_DIR, frame_size = FRAME_SIZE, hop_size = HOP_SIZE)
-    engine.blended_wav_saver(numpy_mixed_file, generated_dir= GENERATED_DIR)
+    # numpy_mixed_file = engine.noise_blender(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
+    # generated_dir = GENERATED_DIR, frame_size = FRAME_SIZE, hop_size = HOP_SIZE)
+    # engine.blended_wav_saver(numpy_mixed_file, generated_dir= GENERATED_DIR)
+    #loaded_files = engine.audio_spec_dict(FILES_DIR)
+    # engine.noise_blender_test(files_dir = FILES_DIR, noise_dir = NOISE_DIR,
+    # generated_dir = GENERATED_DIR, frame_size = FRAME_SIZE, hop_size = HOP_SIZE)
     
     print("Done...")
 
