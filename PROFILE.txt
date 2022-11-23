@@ -9,6 +9,8 @@ Stages:
 ------https://github.com/vbelz/Speech-enhancement
 
 Otro: https://github.com/sthalles/cnn_denoiser
+https://sthalles.github.io/practical-deep-learning-audio-denoising/
+
 
 2. General design and stages outline
 3. Methods and general script

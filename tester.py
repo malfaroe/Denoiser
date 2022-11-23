@@ -22,6 +22,24 @@ GENERATED_DIR = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/
 FRAME_SIZE = 2048
 HOP_SIZE = 512
 
+def refill_array(x, y):
+    """Checks if two arrays have different number of elements y axis 1 
+    and equalize them"""
+    if x.shape[1] < y.shape[1]:
+        new_x = np.zeros((x.shape[0], y.shape[1]))
+        for i in range(x.shape[0]):
+           new_x[i] = np.append(x[i], x[i][:(y.shape[1] - x.shape[1])], axis = 0)
+        x = new_x
+        print("New shape x:", x.shape)
+    elif x.shape[1] > y.shape[1]:
+        new_y = np.zeros((y.shape[0], x.shape[1]))
+        for i in range(y.shape[0]):
+           new_y[i] = np.append(y[i], y[i][:(x.shape[1] - y.shape[1])], axis = 0)
+        y = new_y
+        print("New shape y:", y.shape)
+
+    return x, y
+
 def mixer_creator(files_dir, noise_dir, save_dir,
  n_fft = FRAME_SIZE, hop_length = HOP_SIZE):
     """Takea a file, extracts its specttrpgram and then reconstructs the file
@@ -50,7 +68,7 @@ def mixer_creator(files_dir, noise_dir, save_dir,
         #Loads the file
         noise_numpy_file, sr_original = librosa.load(os.path.join(noise_dir, file))
         print("Noise loaded file length:", len(noise_numpy_file))
-        #recorto para ver si sirve
+        # #recorto para ver si sirve
         noise_numpy_file = noise_numpy_file[:len(numpy_file)]
         print("New shape of noise:", noise_numpy_file.shape)
 
@@ -75,6 +93,7 @@ def mixer_creator(files_dir, noise_dir, save_dir,
     #Mixing
     mixed_magnitude = file_magnitude + 0 * noise_file_magnitude
     audio_reverse = mixed_magnitude * file_phase
+    print(audio_reverse[:2])
     reconstructed_file = librosa.core.istft(audio_reverse, hop_length, n_fft)
     #Save reconstructed file
     save_path = os.path.join(save_dir, "tested_file.wav")

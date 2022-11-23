@@ -8,16 +8,10 @@ import io
 from scipy.io.wavfile import write
 import random
 
-#windows
-# FILES_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Sound"
-# NOISE_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Noises"
-# GENERATED_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\MixedNoise"
 
-#mac...
-
-FILES_DIR = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/Sound"
-NOISE_DIR = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/Noises"
-GENERATED_DIR = r"/Users/mauricioalfaro/Documents/mae_code/Denoiser/Data Engine/MixedNoise"
+FILES_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Sound"
+NOISE_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\Noises"
+GENERATED_DIR = r"C:\Users\malfaro\Desktop\mae_code\Denoiser\Data Engine\MixedNoise"
 
 
 FRAME_SIZE = 2048
@@ -78,7 +72,28 @@ class DataEngine():
 
         """The problem is in the queality of the wav converter unit"""
 
-    
+
+
+    #####TESTINGN UNIT
+    def noise_blender_test(self, files_dir, noise_dir, generated_dir, frame_size, hop_size):
+        """Generates a big numpy file  randomly mixing two folders of sound 
+        and noise folders"""
+        #Creates the loaded files for sound and noise folders
+        sound_numpy_matrix = self.audio_numpy_matrix(files_dir)
+        print("Shape sound numpy:", sound_numpy_matrix.shape)
+        noise_numpy_matrix = self.audio_numpy_matrix(noise_dir)
+        print("Shape noise numpy:", noise_numpy_matrix.shape)
+        print("Noise numpy sample:", noise_numpy_matrix[100:103])
+
+        mixed_sound = np.zeros((sound_numpy_matrix.shape[0], sound_numpy_matrix.shape[1]))
+        #Randomly mixing the files...
+        for i in range(sound_numpy_matrix.shape[0]):
+            # j = np.random.choice(len(noise_numpy_matrix[0]))
+            j = np.random.choice(noise_numpy_matrix.shape[0])
+            mixed_sound[i, :] = sound_numpy_matrix[i, :] + 0.4 * noise_numpy_matrix[j, :]
+
+        print("Total files processsed:", i)
+        return mixed_sound
 
     def blended_wav_saver(self, numpy_file, generated_dir):
         """Converts a numpy file into a wav file.
